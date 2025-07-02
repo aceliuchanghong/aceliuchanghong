@@ -7,6 +7,10 @@ on:
     - cron: "0 */12 * * *"
   workflow_dispatch:
 
+# 为工作流程授予写入仓库内容的权限
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
