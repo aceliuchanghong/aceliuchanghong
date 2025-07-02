@@ -1,0 +1,39 @@
+# .github/workflows/snake.yml
+name: Generate Snake Animation
+
+on:
+  schedule:
+    # 每天的 00:00 和 12:00 (UTC) 自动运行
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate snake animation
+        uses: Platane/snk@v3
+        with:
+          # 你的 GitHub 用户名
+          github_user_name: ${{ github.repository_owner }}
+
+          # 定义输出文件
+          # 你可以自定义颜色等参数
+          # ?palette=github-dark 可以为深色模式生成不同配色的动画
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: Deploy to output branch
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          # 存放动画文件的分支
+          target_branch: output
+          # 包含生成文件的目录
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
